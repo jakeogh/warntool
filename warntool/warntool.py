@@ -57,18 +57,24 @@ from pathtool import path_is_block_special
 from run_command import run_command
 
 
-def warn(devices, *, msg=None):
+def warn(devices,
+         *,
+         verbose: bool,
+         debug: bool,
+         msg=None,
+         ):
+
     assert isinstance(devices, tuple)
     disk_gib_set = set()
     for device in devices:
         device = Path(device)
         assert path_is_block_special(device)
-        assert not block_special_path_is_mounted(device, verbose=False, debug=False)
+        assert not block_special_path_is_mounted(device, verbose=verbose, debug=verbose)
 
         if msg:
             eprint(msg)
         else:
-            devices_as_posix = [device.as_posix() for device in devices]
+            devices_as_posix = [Path(device).as_posix() for device in devices]
             eprint("THIS WILL DESTROY ALL DATA ON", ' '.join(devices_as_posix), "_REMOVE_ ANY HARD DRIVES (and removable storage like USB sticks) WHICH YOU DO NOT WANT TO ACCIDENTLY DELETE THE DATA ON")
             del devices_as_posix
 
