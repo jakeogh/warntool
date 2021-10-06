@@ -48,12 +48,12 @@ from typing import Union
 from asserttool import eprint
 from asserttool import ic
 from asserttool import nevd
-from asserttool import validate_slice
-from asserttool import verify
-from enumerate_input import enumerate_input
+#from asserttool import validate_slice
+#from asserttool import verify
+#from enumerate_input import enumerate_input
 from mounttool import block_special_path_is_mounted
 from pathtool import path_is_block_special
-from retry_on_exception import retry_on_exception
+#from retry_on_exception import retry_on_exception
 from run_command import run_command
 
 
@@ -108,7 +108,4 @@ def cli(ctx,
                                      ipython=False,
                                      verbose=verbose,
                                      debug=debug,)
-
-
-
 
