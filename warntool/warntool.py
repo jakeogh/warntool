@@ -25,15 +25,10 @@
 import os
 import sys
 import time
+from pathlib import Path
 from signal import SIG_DFL
 from signal import SIGPIPE
 from signal import signal
-
-import click
-import sh
-
-signal(SIGPIPE, SIG_DFL)
-from pathlib import Path
 from typing import ByteString
 from typing import Generator
 from typing import Iterable
@@ -43,25 +38,24 @@ from typing import Sequence
 from typing import Tuple
 from typing import Union
 
-#from with_sshfs import sshfs
-#from with_chdir import chdir
+import click
+import sh
 from asserttool import eprint
 from asserttool import ic
 from asserttool import nevd
-#from asserttool import validate_slice
-#from asserttool import verify
-#from enumerate_input import enumerate_input
+from clicktool import click_add_options
+from clicktool import click_global_options
 from mounttool import block_special_path_is_mounted
 from pathtool import path_is_block_special
-#from retry_on_exception import retry_on_exception
 from run_command import run_command
+
+signal(SIGPIPE, SIG_DFL)
 
 
 def warn(devices,
          *,
-         verbose: bool,
-         debug: bool,
-         msg=None,
+         verbose: int,
+         msg: Optional[str] = None,
          ):
 
     assert isinstance(devices, tuple)
@@ -69,7 +63,7 @@ def warn(devices,
     for device in devices:
         device = Path(device)
         assert path_is_block_special(device)
-        assert not block_special_path_is_mounted(device, verbose=verbose, debug=verbose)
+        assert not block_special_path_is_mounted(device, verbose=verbose,)
 
         if msg:
             eprint(msg)
@@ -79,7 +73,7 @@ def warn(devices,
             del devices_as_posix
 
         fdisk_command = ["fdisk", "--list", device.as_posix()]
-        output = run_command(fdisk_command, expected_exit_status=0, str_output=True)
+        output = run_command(fdisk_command, expected_exit_status=0, str_output=True, verbose=verbose,)
         print(output, file=sys.stderr)
         disk_gib = output.split('Disk {}: '.format(device))
         #ic(disk_gib)
@@ -105,13 +99,7 @@ def warn(devices,
 @click.option('--debug', is_flag=True)
 @click.pass_context
 def cli(ctx,
-        verbose: bool,
-        debug: bool,
+        verbose: int,
         ):
-
-    null, end, verbose, debug = nevd(ctx=ctx,
-                                     printn=False,
-                                     ipython=False,
-                                     verbose=verbose,
-                                     debug=debug,)
+    pass
 
