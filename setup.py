@@ -23,11 +23,6 @@ config = {
     "zip_safe": False,
     "platforms": "any",
     "install_requires": dependencies,
-    "entry_points": {
-        "console_scripts": [
-            "warntool=warntool.warntool:cli",
-        ],
-    },
 }
 
 setup(**config)

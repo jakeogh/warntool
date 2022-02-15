@@ -40,11 +40,11 @@ from typing import Union
 
 import click
 import sh
-from asserttool import eprint
 from asserttool import ic
-from asserttool import nevd
 from clicktool import click_add_options
 from clicktool import click_global_options
+from clicktool import tv
+from eprint import eprint
 from mounttool import block_special_path_is_mounted
 from pathtool import path_is_block_special
 from run_command import run_command
@@ -54,7 +54,7 @@ signal(SIGPIPE, SIG_DFL)
 
 def warn(devices,
          *,
-         verbose: int,
+         verbose: Union[bool, int, float],
          msg: Optional[str] = None,
          ):
 
@@ -76,7 +76,6 @@ def warn(devices,
         output = run_command(fdisk_command, expected_exit_status=0, str_output=True, verbose=verbose,)
         print(output, file=sys.stderr)
         disk_gib = output.split('Disk {}: '.format(device))
-        #ic(disk_gib)
         disk_gib = disk_gib[1].split(' ')[0]
         #ic(disk_gib)
         float(disk_gib)
@@ -92,14 +91,3 @@ def warn(devices,
 
     eprint("Sleeping 5 seconds")
     time.sleep(5)
-
-
-@click.command()
-@click.option('--verbose', is_flag=True)
-@click.option('--debug', is_flag=True)
-@click.pass_context
-def cli(ctx,
-        verbose: int,
-        ):
-    pass
-
