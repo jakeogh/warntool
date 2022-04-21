@@ -52,41 +52,56 @@ from run_command import run_command
 signal(SIGPIPE, SIG_DFL)
 
 
-def warn(devices,
-         *,
-         verbose: Union[bool, int, float],
-         msg: Optional[str] = None,
-         ):
+def warn(
+    devices,
+    *,
+    verbose: Union[bool, int, float],
+    msg: Optional[str] = None,
+):
 
     assert isinstance(devices, tuple)
     disk_gib_set = set()
     for device in devices:
         device = Path(device)
         assert path_is_block_special(device)
-        assert not block_special_path_is_mounted(device, verbose=verbose,)
+        assert not block_special_path_is_mounted(
+            device,
+            verbose=verbose,
+        )
 
         if msg:
             eprint(msg)
         else:
             devices_as_posix = [Path(device).as_posix() for device in devices]
-            eprint("THIS WILL DESTROY ALL DATA ON", ' '.join(devices_as_posix), "_REMOVE_ ANY HARD DRIVES (and removable storage like USB sticks) WHICH YOU DO NOT WANT TO ACCIDENTLY DELETE THE DATA ON")
+            eprint(
+                "THIS WILL DESTROY ALL DATA ON",
+                " ".join(devices_as_posix),
+                "_REMOVE_ ANY HARD DRIVES (and removable storage like USB sticks) WHICH YOU DO NOT WANT TO ACCIDENTLY DELETE THE DATA ON",
+            )
             del devices_as_posix
 
         fdisk_command = ["fdisk", "--list", device.as_posix()]
-        output = run_command(fdisk_command, expected_exit_status=0, str_output=True, verbose=verbose,)
+        output = run_command(
+            fdisk_command,
+            expected_exit_status=0,
+            str_output=True,
+            verbose=verbose,
+        )
         print(output, file=sys.stderr)
-        disk_gib = output.split('Disk {}: '.format(device))
-        disk_gib = disk_gib[1].split(' ')[0]
-        #ic(disk_gib)
+        disk_gib = output.split(f"Disk {device}: ")
+        disk_gib = disk_gib[1].split(" ")[0]
+        # ic(disk_gib)
         float(disk_gib)
         disk_gib_set.add(disk_gib)
         if len(list(disk_gib_set)) > 1:
             ic(disk_gib_set)
-            raise ValueError('disks are not the same size!', list(disk_gib_set))
+            raise ValueError("disks are not the same size!", list(disk_gib_set))
         print("")
-        answer = input("Do you want to delete all of your data? (type the size of the disk in GiB to proceed): ")
+        answer = input(
+            "Do you want to delete all of your data? (type the size of the disk in GiB to proceed): "
+        )
         if answer != disk_gib:
-            ic('INCORRECT, the size in GiB is: {}, not {}:'.format(disk_gib, answer))
+            ic("INCORRECT, the size in GiB is: {}, not {}:".format(disk_gib, answer))
             sys.exit(1)
 
     eprint("Sleeping 5 seconds")
