@@ -98,7 +98,7 @@ def warn(
             raise ValueError("disks are not the same size!", list(disk_gib_set))
         print("")
         answer = input(
-            "Do you want to delete all of your data? (type the size of the disk in GiB to proceed): "
+            "Do you want to delete all of your data? (type the size of the disk to proceed): "
         )
         if answer != disk_gib:
             ic("INCORRECT, the size in GiB is: {}, not {}:".format(disk_gib, answer))
