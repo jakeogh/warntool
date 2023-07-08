@@ -42,6 +42,7 @@ def warn(
     devices,
     *,
     msg: None | str = None,
+    disk_size: None | str,
     verbose: bool | int | float = False,
 ):
     assert isinstance(devices, tuple)
@@ -51,7 +52,6 @@ def warn(
         assert path_is_block_special(device)
         assert not block_special_path_is_mounted(
             device,
-            verbose=verbose,
         )
 
         if msg:
@@ -70,7 +70,6 @@ def warn(
             fdisk_command,
             expected_exit_status=0,
             str_output=True,
-            verbose=verbose,
         )
         print(output, file=sys.stderr)
         disk_gib = output.split(f"Disk {device}: ")
@@ -82,11 +81,14 @@ def warn(
             ic(disk_gib_set)
             raise ValueError("disks are not the same size!", list(disk_gib_set))
         print("")
-        answer = input(
-            "Do you want to delete all of your data? (type the size of the disk to proceed): "
-        )
+        if not disk_size:
+            answer = input(
+                "Do you want to delete all of your data? (type the size of the disk to proceed): "
+            )
+        else:
+            answer = disk_size
         if answer != disk_gib:
-            ic("INCORRECT, the size in GiB is: {}, not {}:".format(disk_gib, answer))
+            ic(f"INCORRECT, the size in GiB is: {disk_gib}, not {answer}:")
             sys.exit(1)
 
     eprint("Sleeping 5 seconds")
