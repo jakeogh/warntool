@@ -44,7 +44,6 @@ def warn(
     msg: None | str = None,
     verbose: bool | int | float = False,
 ):
-
     assert isinstance(devices, tuple)
     disk_gib_set = set()
     for device in devices:
