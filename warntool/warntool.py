@@ -42,7 +42,7 @@ def warn(
     devices,
     *,
     msg: None | str = None,
-    disk_size: None | str,
+    disk_size: None | str = None,
     verbose: bool | int | float = False,
 ):
     assert isinstance(devices, tuple)
