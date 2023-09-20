@@ -43,7 +43,7 @@ def warn(
     *,
     msg: None | str = None,
     disk_size: None | str = None,
-    verbose: bool | int | float = False,
+    verbose: bool = False,
 ):
     assert isinstance(devices, tuple)
     disk_gib_set = set()
