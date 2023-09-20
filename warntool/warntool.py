@@ -91,5 +91,5 @@ def warn(
             ic(f"INCORRECT, the size in GiB is: {disk_gib}, not {answer}:")
             sys.exit(1)
 
-    eprint("Sleeping 5 seconds")
+    eprint("Sleeping 5 seconds, press CTRL-c to cancel")
     time.sleep(5)
