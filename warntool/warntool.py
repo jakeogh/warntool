@@ -41,17 +41,17 @@ signal(SIGPIPE, SIG_DFL)
 def warn(
     devices,
     *,
+    symlink_ok: bool,
     msg: None | str = None,
     disk_size: None | str = None,
-    verbose: bool = False,
 ):
     assert isinstance(devices, tuple)
     disk_gib_set = set()
     for device in devices:
         device = Path(device)
-        assert path_is_block_special(device)
+        assert path_is_block_special(device, symlink_ok=symlink_ok)
         assert not block_special_path_is_mounted(
-            device,
+            device.resolve(),
         )
 
         if msg:
