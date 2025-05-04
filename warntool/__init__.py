@@ -1,1 +1,5 @@
-from .warntool import warn
+"""
+isort:skip_file
+"""
+
+from .warntool import warn as warn
