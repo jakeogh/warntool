@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "warntool"
-version = "0.0.1760907008"
+version = "0.0.1760910085"
 description = "Short explination of what it does _here_"
 authors = [
     { name = "Justin Keogh", email = "github.com@v6y.net" },
@@ -18,10 +18,8 @@ dependencies = [
     "pathtool @ git+https://github.com/jakeogh/pathtool",
     "run-command @ git+https://github.com/jakeogh/run-command",
 ]
+license = "ISC"
 requires-python = ">=3.11"
-
-[project.license]
-text = "ISC"
 
 [project.urls]
 Homepage = "https://github.com/jakeogh/warntool"
