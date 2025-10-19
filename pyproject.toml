@@ -1,0 +1,41 @@
+[build-system]
+requires = [
+    "setuptools>=61.0",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "warntool"
+version = "0.0.1760907008"
+description = "Short explination of what it does _here_"
+authors = [
+    { name = "Justin Keogh", email = "github.com@v6y.net" },
+]
+dependencies = [
+    "asserttool @ git+https://github.com/jakeogh/asserttool",
+    "eprint @ git+https://github.com/jakeogh/eprint",
+    "mounttool @ git+https://github.com/jakeogh/mounttool",
+    "pathtool @ git+https://github.com/jakeogh/pathtool",
+    "run-command @ git+https://github.com/jakeogh/run-command",
+]
+requires-python = ">=3.11"
+
+[project.license]
+text = "ISC"
+
+[project.urls]
+Homepage = "https://github.com/jakeogh/warntool"
+
+[tool.setuptools]
+include-package-data = true
+zip-safe = false
+
+[tool.setuptools.packages.find]
+exclude = [
+    "tests",
+]
+
+[tool.setuptools.package-data]
+warntool = [
+    "py.typed",
+]
